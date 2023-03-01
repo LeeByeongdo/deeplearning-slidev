@@ -47,7 +47,7 @@ transition: fade-out
 
 # 목표
 
-간단한 숫자 이미지 인식 신경망 모델을 예시로, 학습이란 어떻게 이루어지는지 감을 잡아봅시다.
+간단한 숫자 이미지 인식 신경망 모델을 예시로, 실제로 학습이 어떻게 구현되는지 알아봅니다.
 
 ### 목차
 
@@ -121,7 +121,7 @@ h1 {
 
 <div grid="~ cols-2 gap-2" m="-t-2">
 
-<img border="rounded" src="https://compmath.korea.ac.kr/appmath2021/_images/fig2-1.png">
+<img border="rounded" style="width: 90%" src="https://compmath.korea.ac.kr/appmath2021/_images/fig2-1.png">
 
 $$
 y = \begin{cases}
@@ -183,11 +183,101 @@ def AND(x1, x2):
 
 </div>
 
+<br />
+
+
+
 ---
 
 # 퍼셉트론의 한계 
 
-퍼셉트론을 이용하여 AND 게이트를 구현할 수 있습니다.
+퍼셉트론으로는 선형적인 식만 표현할 수 있다. XOR 게이트를 만들어 볼까요?
+
+$$
+y = \begin{cases}
+   0 &(w_1x_1 + w_2y_2 + b \leq 0) \\
+   1 &(w_1x_1 + w_2y_2 + b > 0)
+\end{cases}
+$$
+
+<div grid="~ cols-2 gap-2" m="-t-2">
+
+| $x_1$ | $x_2$ | y |
+| ----- | ----- | - |
+| 0     | 0     | 0 |
+| 1     | 0     | 1 |
+| 0     | 1     | 1 |
+| 1     | 1     | 0 |
+
+<img border="rounded" src="images/xor.png">
+
+</div>
+
+---
+
+# 다층퍼셉트론
+
+하나로 안되면 여러개 쓰면 됩니다. 사실 퍼셉트론의 참맛은 여러개를 쌓는것입니다.
+
+<br />
+
+<div grid="~ cols-2 gap-2" m="-t-2">
+
+| $x_1$ | $x_2$ | y |
+| ----- | ----- | - |
+| 0     | 0     | 0 |
+| 1     | 0     | 1 |
+| 0     | 1     | 1 |
+| 1     | 1     | 0 |
+
+<div>
+<img border="rounded" style="width:100%" src="https://upload.wikimedia.org/wikipedia/commons/a/a2/254px_3gate_XOR.jpg">
+
+```python
+def XOR(x1, x2):
+    s1 = NAND(x1, x2)
+    s2 = OR(x1, x2)
+    y = AND(s1, s2)
+    return y
+```
+</div>
+
+</div>
+
+---
+
+# 다층퍼셉트론
+
+<br />
+<div grid="~ cols-2 gap-2" m="-t-2">
+
+<div>
+<img border="rounded" style="width:100%" src="https://upload.wikimedia.org/wikipedia/commons/a/a2/254px_3gate_XOR.jpg">
+
+```python
+def XOR(x1, x2):
+    s1 = NAND(x1, x2)
+    s2 = OR(x1, x2)
+    y = AND(s1, s2)
+    return y
+```
+</div>
+
+<img border="rounded" style="width:100%" src="images/multilayer-perceptron.png">
+
+</div>
+
+---
+
+# 신경망
+
+<img border="rounded" src="https://www.tibco.com/sites/tibco/files/media_entity/2021-05/neutral-network-diagram.svg">
+
+---
+
+# 활성화 함수
+
+<br />
 
 $$
 y = \begin{cases}
@@ -198,27 +288,162 @@ $$
 
 <br />
 
+$$
+y = h(w_1x_1 + w_2y_2 + b) \\
+$$
+
+$$
+h(x) = \begin{cases}
+   0 &(x \leq 0) \\
+   1 &(x > 0)
+\end{cases}
+$$
+
+<br />
+
+
+
+<arrow v-click="1" x1="700" y1="420" x2="580" y2="370" color="#63489a" width="3" arrowSize="1" />
+
+---
+
+# 활성화 함수
+
+<br />
 
 <div grid="~ cols-2 gap-2" m="-t-2">
 
-| $x_1$ | $x_2$ | y |
-| ----- | ----- | - |
-| 0     | 0     | 0 |
-| 1     | 0     | 0 |
-| 0     | 1     | 0 |
-| 1     | 1     | 1 |
+<div>
+
+$$
+a = h(w_1x_1 + w_2y_2 + b) \\
+$$
+
+$$
+y = h(a)
+$$
+
+<br />
+
+활성화함수(h)는 학습에 효과가 좋은 다양한 함수가 쓰일 수 있습니다.
+
+- Sigmoid
+- Relu
+
+</div>
+
+<img border="rounded" src="images/activation-function.png">
+
+</div>
+
+---
+
+# 활성화 함수 - Sigmoid
+
+<br />
+
+<div grid="~ cols-2 gap-2" m="-t-2">
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+$$
+h(x) = {1 \above{1pt} 1 + exp(-x)}
+$$
+
+<br />
 
 ```python
-def AND(x1, x2):
-    x = np.array([x1, x2])
-    w = np.array([0.5, 0.5])
-    b = -0.7
-    tmp = np.sum(w*x) + b
-    if tmp <= 0:
-        return 0
-    else:
-        return 1
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x)) 
 ```
+
+</div>
+
+<img border="rounded" src="images/sigmoid.png">
+
+</div>
+
+---
+
+# 활성화 함수 - Relu
+
+<br />
+
+<div grid="~ cols-2 gap-2" m="-t-2">
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+$$
+h(x) = \begin{cases}
+   0 &(x \leq 0) \\
+   x &(x > 0)
+\end{cases}
+$$
+
+<br />
+
+```python
+def relu(x):
+    return np.maximum(0, x)
+```
+
+</div>
+
+<img border="rounded" src="images/relu.png">
+
+</div>
+
+---
+
+# 출력층에서의 활성화 함수
+
+신경망은 분류와 회귀 모두에 사용될 수 있습니다. 어떤 문제냐에 따라 적절한 활성화 함수를 사용해야 합니다.
+
+- 분류 -> Softmax
+- 회귀 -> 항등함수
+
+<br />
+
+
+<div grid="~ cols-2 gap-2" m="-t-2" style="width:80%;margin:auto;">
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 항등 함수
+
+$$
+y_k = x_k
+$$
+
+<br />
+
+```python
+def identity_function(x):
+    return x
+```
+
+</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 소프트맥스 함수
+
+$$
+y_k = {exp(a_k) \above{1pt} \sum_{i=1}^{n} exp(a_i)}
+$$
+
+<br />
+
+```python
+def softmax(a):
+    c = np.max(a)
+    exp_a = np.exp(a-c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+```
+
+</div>
 
 </div>
 
@@ -228,7 +453,7 @@ def AND(x1, x2):
 
 Use code snippets and get the highlighting directly![^1]
 
-```python
+```python{all|3|3|3}
 def AND(x1, x2):
     x = np.array([x1, x2])
     w = np.array([0.5, 0.5])
