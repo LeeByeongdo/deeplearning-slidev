@@ -208,7 +208,7 @@ $$
 | 0     | 1     | 1 |
 | 1     | 1     | 0 |
 
-<img border="rounded" src="images/xor.png">
+<img border="rounded" src="/images/xor.png">
 
 </div>
 
@@ -262,7 +262,7 @@ def XOR(x1, x2):
 ```
 </div>
 
-<img border="rounded" style="width:100%" src="images/multilayer-perceptron.png">
+<img border="rounded" style="width:100%" src="/images/multilayer-perceptron.png">
 
 </div>
 
@@ -331,7 +331,7 @@ $$
 
 </div>
 
-<img border="rounded" src="images/activation-function.png">
+<img border="rounded" src="/images/activation-function.png">
 
 </div>
 
@@ -358,7 +358,7 @@ def sigmoid(x):
 
 </div>
 
-<img border="rounded" src="images/sigmoid.png">
+<img border="rounded" src="/images/sigmoid.png">
 
 </div>
 
@@ -388,7 +388,7 @@ def relu(x):
 
 </div>
 
-<img border="rounded" src="images/relu.png">
+<img border="rounded" src="/images/relu.png">
 
 </div>
 
@@ -472,7 +472,7 @@ def softmax(a):
 
 학습이란 훈련 데이터로부터 가중치 매개변수의 최적값을 자동으로 획득하는 것입니다.
 
-<img border="rounded" src="images/neural-network.png" style="width: 80%;" />
+<img border="rounded" src="/images/neural-network.png" style="width: 80%;" />
 
 
 ---
