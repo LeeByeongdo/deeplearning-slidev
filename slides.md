@@ -528,7 +528,7 @@ def cross_entropy_error(y, t):
 
 ---
 
-# 미분, 편미분
+# 미분
 
 <br />
 
@@ -564,7 +564,7 @@ $$
 f(x_0, x_1) = x_0^2 + x_1^2
 $$
 
-예시) x0 = 3, x1=4에서 각각의 편미분
+예시) $x_0$ = 3, $x_1$=4에서 각각의 편미분
 
 $$
 {\partial{f}\above{1pt}\partial{x_0}} = 2x_0 + 4^2 \enspace\enspace\enspace\enspace {\partial{f}\above{1pt}\partial{x_1}} = 3^2 + 2x_1
