@@ -97,18 +97,10 @@ h1 {
 
 |     |     |
 | --- | --- |
-| python| python은 기계학습과 데이터 과학 분야에서 널리 쓰입니다. |
+| python| python은 기계학습과 데이터 과학 분야에서 널리 쓰이는 언어입니다. |
 | numpy | 수치 계산과 통계 처리를 해주는 라이브러리입니다. |
 | matplotlib.pyplot | 그래프를 그려주는 라이브러리입니다. |
 | mnist | 학습에 필요한 데이터를 제공해줍니다. |
-
-<!-- https://sli.dev/guide/animations.html#click-animations
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p> -->
 
 ---
 
@@ -168,6 +160,8 @@ $$
 | 0     | 1     | 0 |
 | 1     | 1     | 1 |
 
+<div>
+
 ```python
 def AND(x1, x2):
     x = np.array([x1, x2])
@@ -179,6 +173,10 @@ def AND(x1, x2):
     else:
         return 1
 ```
+
+비슷한 방식으로 NAND, OR 게이트도 만들 수 있습니다.
+
+</div>
 
 </div>
 
@@ -286,6 +284,8 @@ y = \begin{cases}
 $$
 
 <br />
+<h2 style="text-align: center;">⬇️</h2>
+<br />
 
 $$
 y = h(w_1x_1 + w_2y_2 + b) \\
@@ -300,9 +300,7 @@ $$
 
 <br />
 
-
-
-<arrow v-click="1" x1="700" y1="420" x2="580" y2="370" color="#63489a" width="3" arrowSize="1" />
+<arrow v-click="1" x1="700" y1="480" x2="580" y2="430" color="#63489a" width="3" arrowSize="1" />
 
 ---
 
@@ -494,7 +492,7 @@ def softmax(a):
 #### 평균 제곱 오차
 
 $$
-E = {1\above{1pt}2}\sum_k(y_k - t_k)^{2}
+E = {1\above{1pt}\enspace2\enspace }\sum_k(y_k - t_k)^{2}
 $$
 
 <br />
