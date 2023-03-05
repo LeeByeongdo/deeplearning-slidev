@@ -36,18 +36,15 @@ title: Deep Learning from Scratch
   </a>
 </div>
 
-<!--
-1. 안녕
-2ㅏㅇ럼ㄴㅇ란ㅇㄹㅇㄴㄹ
--->
 
----
-transition: fade-out
----
+--- 
 
 # 목표
 
 간단한 숫자 이미지 인식 신경망 모델을 예시로, 실제로 학습이 어떻게 구현되는지 알아봅니다.
+
+<div grid="~ cols-2 gap-2" m="-t-2">
+<div>
 
 ### 목차
 
@@ -57,11 +54,13 @@ transition: fade-out
 - 🏋🏿 **활성화 함수**
 - 📖 **신경망 학습**
 - ⟷ **손실함수**
-- 🔙 **오차역전파**
+- ∂ **경사하강법**
 - 🎬 **완성**
+</div>
 
-<br>
-<br>
+<img style="width: 70%" src="https://camo.githubusercontent.com/cf3b516aff9e645a93048bc1da870e6cfc66294c028a9512d7c8a2b48283e075/68747470733a2f2f692e696d6775722e636f6d2f55346a324a59542e6a7067" />
+
+</div>
 
 <!--
 You can have `style` tag in markdown to override the style for the current page.
@@ -449,286 +448,196 @@ def softmax(a):
 
 ---
 
-# Code
+# MNIST DATASET
 
-Use code snippets and get the highlighting directly![^1]
+학습을 위한 손글씨 숫자 이미지 데이터 모음
 
-```python{all|3|3|3}
-def AND(x1, x2):
-    x = np.array([x1, x2])
-    w = np.array([0.5, 0.5])
-    b = -0.7
-    tmp = np.sum(w*x) + b
-    if tmp <= 0:
-        return 0
-    else:
-        return 1
-```
+<br />
 
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
----
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
-
----
-class: px-20
----
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
 
 <div grid="~ cols-2 gap-2" m="-t-2">
 
-```yaml
----
-theme: default
----
-```
+- 28 x 28 크기의 회색조 이미지 (1채널)
+- 각 픽셀은 0에서 255까지의 값
+- 실제 이미지가 의미하는 숫자(정답) 레이블 포함
+- 6만개의 학습용 데이터와 1만개의 시험용 데이터
 
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
-
----
-preload: false
----
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
+<img border="rounded" src="https://upload.wikimedia.org/wikipedia/commons/2/27/MnistExamples.png">
 
 </div>
 
 ---
 
-# LaTeX
+# 신경망 학습
 
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
+학습이란 훈련 데이터로부터 가중치 매개변수의 최적값을 자동으로 획득하는 것입니다.
 
-<br>
+<img border="rounded" src="images/neural-network.png" style="width: 80%;" />
 
-Inline $\sqrt{3x-1}+(1+x)^2$
 
-Block
+---
+
+# 손실함수
+
+현재의 상태를 나타내는 지표로 사용됩니다. (실제 정답과 현재 신경망에서 도출된 결과의 차이)
+
+- 평균 제곱 오차
+- 교차 엔트로피 오차
+
+
+<br />
+
+<div grid="~ cols-2 gap-2" m="-t-2" style="width:80%;margin:auto;">
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 평균 제곱 오차
+
 $$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
+E = {1\above{1pt}2}\sum_k(y_k - t_k)^{2}
 $$
 
-<br>
+<br />
 
-[Learn more](https://sli.dev/guide/syntax#latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
+```python
+def mean_squared_error(y, t):
+    return 0.5 * np.sum((y-t)**2)
 ```
 
 </div>
 
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 교차 엔트로피 오차
+
+$$
+E = -\sum_{k}t_klogy_k
+$$
+
+<br />
+
+```python
+def cross_entropy_error(y, t):
+  delta = 1e-7
+  return -np.sum(t * np.log(y + delta))
+```
+
+</div>
+
+</div>
 
 ---
-src: ./pages/multiple-entries.md
-hide: false
+
+# 미분, 편미분
+
+<br />
+
+<div grid="~ cols-2 gap-2" m="-t-2" style="width:100%;margin:auto;">
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 미분
+
+한순간의 변화량
+
+$$
+{df(x)\above{1pt}dx}=\lim\limits_{h->0}{f(x+h) - f(x)\above{1pt}h}
+$$
+
+<br />
+
+```python
+def numerical_diff(f, x):
+    h = 1e-4
+    return (f(x + h) - f(x - h)) / (2 * h)
+```
+
+</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 편미분
+
+변수가 여러개인 경우에 각 변수에 대한 변화량을 구하는 방법
+
+$$
+f(x_0, x_1) = x_0^2 + x_1^2
+$$
+
+예시) x0 = 3, x1=4에서 각각의 편미분
+
+$$
+{\partial{f}\above{1pt}\partial{x_0}} = 2x_0 + 4^2 \enspace\enspace\enspace\enspace {\partial{f}\above{1pt}\partial{x_1}} = 3^2 + 2x_1
+$$
+
+</div>
+
+</div>
+
 ---
+
+# 경사법(경사 하강법)
+
+기울기를 이용해 함수의 최솟값을 찾는 방법입니다.
+
+<br />
+
+<div grid="~ cols-2 gap-2" m="-t-2" style="width:100%;margin:auto;">
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 기울기 (모든 매개변수에 대한 편미분 집합)
+
+```python
+def numerical_gradient(f, x):
+    h = 1e-4  # 0.0001
+    grad = np.zeros_like(x)
+
+    for idx in range(x.size):
+        tmp_val = x[idx]
+        x[idx] = float(tmp_val) + h
+        fxh1 = f(x)  # f(x+h)
+
+        x[idx] = tmp_val - h
+        fxh2 = f(x)  # f(x-h)
+        grad[idx] = (fxh1 - fxh2) / (2 * h)
+
+        x[idx] = tmp_val
+
+    return grad
+```
+
+</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+#### 매개변수 조정
+
+$$
+x_0 = x_0 - \eta{\partial{f}\above{1pt}\partial{x_0}}
+$$
+
+$$
+x_1 = x_1 - \eta{\partial{f}\above{1pt}\partial{x_1}}
+$$
+
+$\eta$ = 학습률 (0.001, 0.0001 등)
+
+</div>
+
+</div>
 
 ---
 layout: center
 class: text-center
 ---
 
-# Learn More
+# 코드 실행해보기
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+
+---
+layout: center
+class: text-center
+---
+
+# 감사합니다
